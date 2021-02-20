@@ -33,7 +33,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity debounce is
     Port ( clk : in STD_LOGIC;
-           btn : in STD_LOGIC;
+           vpush_buttons_tri_i0 : in STD_LOGIC;
            dbnc : out STD_LOGIC);
 end debounce;
 
@@ -52,7 +52,7 @@ begin
                     counter <= (others => '0');            
                 end if;
                 sreg(1) <= sreg(0);
-                sreg(0) <= btn;
+                sreg(0) <= vpush_buttons_tri_i0;
                 if (sreg(1) = '1') then
                     if(unsigned(samples) < 4) then
                         samples <= std_logic_vector(unsigned(samples) + 1);
@@ -69,3 +69,4 @@ begin
    end process;
 
 end Behavioral;
+
