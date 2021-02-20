@@ -43,7 +43,7 @@ architecture Behavioral of dbnc_tb is
     component debounce is
         port ( 
             clk : in std_logic;
-            btn : in std_logic;
+            vpush_buttons_tri_i0 : in std_logic;
             dbnc : out std_logic
         
         );
@@ -74,9 +74,10 @@ architecture Behavioral of dbnc_tb is
     dut : debounce
     port map (
         clk => tb_clk,
-        btn => tb_btn,
+        vpush_buttons_tri_i0 => tb_btn,
         dbnc => tb_dbnc
      );
 
 
 end Behavioral;
+
