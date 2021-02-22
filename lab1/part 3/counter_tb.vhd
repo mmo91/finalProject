@@ -60,6 +60,8 @@ component fancy_counter is
 end component;
 
 
+
+
 begin
 
     clk_gen_proc: process
@@ -73,10 +75,11 @@ begin
     end process clk_gen_proc;
     
     dir_proc: process begin
-        wait for 4 ns;
-        tb_dir <= '1';
-        wait for 12 ns;
+
         tb_dir <= '0';
+        wait for 50 ns;
+        tb_dir <= '1';
+        wait for 100 ns;
     end process dir_proc;
     
     rst_proc: process begin
@@ -95,17 +98,17 @@ begin
         wait for 12 ns;
         tb_en <= '0';
         wait for 100 ns;
-        tb_en <= '1';
+        --tb_en <= '1';
         tb_clk_en <='0';
     end process en_proc;
     
     ld_proc: process begin
-        wait for 4 ns;
+            tb_ld <= '1';
+            tb_updn <= '1';
+        wait for 100 ns;
             tb_ld <= '0';
             tb_updn <= '0';
         wait for 100 ns;
-            tb_ld <= '1';
-            tb_updn <= '1';
     end process ld_proc;
     
     dut: fancy_counter
