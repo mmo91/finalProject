@@ -20,8 +20,7 @@ end my_alu;
 
 architecture Behavioral of my_alu is
 
-signal op : std_logic_vector (3 downto 0) := std_logic_vector(Opcode);
-signal hd: std_logic_vector (1 downto 0);
+
 
 begin
 process(clk)

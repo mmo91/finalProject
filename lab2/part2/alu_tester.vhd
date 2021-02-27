@@ -39,7 +39,6 @@ component my_alu is
      Port ( clk : in std_logic;
             btn : in STD_LOGIC_VECTOR (3 downto 0);
             sw : in STD_LOGIC_VECTOR (3 downto 0);
-            rst : out STD_LOGIC;
             A : out STD_LOGIC_VECTOR (3 downto 0);
             B : out STD_LOGIC_VECTOR (3 downto 0);
             Op : out STD_LOGIC_VECTOR (3 downto 0));
@@ -59,17 +58,15 @@ begin
     btn1: debounce Port map ( clk => clk, btn => btn(1), dbnc => dbnc(1));
     btn0: debounce Port map ( clk => clk, btn => btn(0), dbnc => dbnc(0));
     
-    sel: btn_sel Port map ( clk => clk, btn => dbnc, sw => sw, Op => Op, A => A, B => B, rst => rst);
+    sel: btn_sel Port map ( clk => clk, btn => dbnc, sw => sw, Op => Op, A => A, B => B);
     alu : my_alu Port map (clk => clk, A => unsigned(A), B => unsigned(B), Opcode => unsigned(Op), funct => funct);  
     
     process(clk) begin
     
         if rising_edge(clk) then
-            if (rst = '1') then
-                led <= (others => '0');
-             else
-                led <= std_logic_vector(funct);
-             end if;
+
+            led <= std_logic_vector(funct);
+
         end if;
     
     end process;  

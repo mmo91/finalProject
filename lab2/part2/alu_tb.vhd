@@ -43,7 +43,7 @@ begin
     
     alu_test: process begin
         wait for 4 ms;
-        tb_btn <= "0100";
+        tb_btn <= "1000";
         tb_sw <= "0000";
         wait for 48 ms;
         tb_btn <= "0010";
@@ -51,7 +51,10 @@ begin
         wait for 48 ms;
         tb_btn <= "0001";
         tb_sw <= "0011";
-        wait for 44 ms;
+        wait for 48 ms;
+        tb_btn <= "0100";
+        tb_sw <= "0000";
+        wait for 116 ms;
     
     end process alu_test;
     

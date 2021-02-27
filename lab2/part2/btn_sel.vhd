@@ -14,7 +14,6 @@ entity btn_sel is
     Port ( clk : in std_logic;
            btn : in STD_LOGIC_VECTOR (3 downto 0);
            sw : in STD_LOGIC_VECTOR (3 downto 0);
-           rst : out STD_LOGIC;
            A : out STD_LOGIC_VECTOR (3 downto 0);
            B : out STD_LOGIC_VECTOR (3 downto 0);
            Op : out STD_LOGIC_VECTOR (3 downto 0));
@@ -28,18 +27,21 @@ begin
 
 if rising_edge(clk) then
 
-    case btn is
-        when "1000" => -- reset button
-            rst <= '1';
-        when "0100" => -- load opcode
-            Op <= sw;
-        when "0010" => -- load A
-            A <= sw;
-        when "0001" => -- load B
-            B <= sw;
-        when others =>
-            rst <= '0';
-    end case;
+   if (btn = "1000") then -- reset
+       Op <= (others => '0');
+       A <= (others => '0');
+       B <= (others => '0');
+   
+   elsif (btn = "0100") then -- set opcode
+       Op <= sw;
+
+   elsif (btn = "0010") then -- set A
+        A <= sw;
+
+   elsif (btn = "0001") then -- set B
+        B <= sw;
+   end if;
+
     
 end if;
 end process;
