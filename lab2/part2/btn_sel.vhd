@@ -20,6 +20,9 @@ entity btn_sel is
 end btn_sel;
 
 architecture Behavioral of btn_sel is
+    signal a_hd : std_logic_vector(3 downto 0) := (others => '0');
+    signal b_hd : std_logic_vector(3 downto 0) := (others => '0');
+    signal o_hd : std_logic_vector(3 downto 0) := (others => '0');
 
 begin
 process(clk)
@@ -34,12 +37,22 @@ if rising_edge(clk) then
    
    elsif (btn = "0100") then -- set opcode
        Op <= sw;
+       o_hd <= sw;
+       A <= a_hd;
+       B <= b_hd;
 
    elsif (btn = "0010") then -- set A
         A <= sw;
+        a_hd <= sw;
+        B <= b_hd;
+        O <= o_hd;
 
    elsif (btn = "0001") then -- set B
         B <= sw;
+        b_hd <= sw;
+        A <= a_hd;
+        O <= o_hd;
+
    end if;
 
     
