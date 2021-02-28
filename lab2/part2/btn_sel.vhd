@@ -45,13 +45,13 @@ if rising_edge(clk) then
         A <= sw;
         a_hd <= sw;
         B <= b_hd;
-        O <= o_hd;
+        Op <= o_hd;
 
    elsif (btn = "0001") then -- set B
         B <= sw;
         b_hd <= sw;
         A <= a_hd;
-        O <= o_hd;
+        Op <= o_hd;
 
    end if;
 
