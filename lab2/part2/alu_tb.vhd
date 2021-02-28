@@ -40,7 +40,7 @@ begin
         tb_clk <= '0';
         
     end process clk_gen_proc;
-    
+
     alu_test: process begin
         wait for 4 ms;
         tb_btn <= "1000";
@@ -49,11 +49,16 @@ begin
         tb_btn <= "0010";
         tb_sw <= "0001";
         wait for 48 ms;
+        tb_btn <= "0000";
+        wait for 40 ns;
         tb_btn <= "0001";
         tb_sw <= "0011";
         wait for 48 ms;
+        tb_btn <= "0000";
+        wait for 40 ns;
         tb_btn <= "0100";
         tb_sw <= "0000";
+        wait for 116 ms;
         wait for 116 ms;
     
     end process alu_test;
