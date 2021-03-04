@@ -52,7 +52,7 @@ signal busy: std_logic_vector ( 2 downto 0) := "000";
 
 -- utilize idle state --
 begin
-FSM: process begin
+FSM: process(clk) begin
     if rising_edge(clk) then
         if (en = '1') then
             if (rst = '1') then
