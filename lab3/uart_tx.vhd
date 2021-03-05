@@ -43,7 +43,8 @@ end uart_tx;
 
 architecture Behavioral of uart_tx is
 
-signal index : std_logic_vector (2 downto 0);
+signal index : std_logic_vector (2 downto 0):= (others => '0');
+signal samples : std_logic_vector (1 downto 0) := (others => '0');
 signal idle : std_logic;
 signal go: std_logic;
 signal seq: std_logic_vector(7 downto 0);
@@ -54,9 +55,10 @@ proc: process(clk)
 begin
     if (rst = '1') then
         idle <= '1';
-        index <= "111";
+        index <= (others => '0');
         ready <= '1';
         go <= '0';
+        samples <= (others => '0');
         seq <= (others => '0');
     else
       if (rising_edge(clk)) then
@@ -66,21 +68,25 @@ begin
                 seq <= char;
                 idle <= '0';
                 ready <= '0';
-                tx <= seq(to_integer(unsigned(index)));
-                index <= std_logic_vector( unsigned(index) - 1);
-           end if;
-        end if;
-        if (go = '1') then
-            tx <= seq(to_integer(unsigned(index))); -- send the value of char bit
-            if (unsigned(index) > 0) then
-                index <= std_logic_vector( unsigned(index) - 1);
-            else -- last bit
-                index <= "111"; 
-                go <= '0';
-                ready <= '1'; -- does this act as stop bit?
+                --tx <= seq(7); -- send start bit
+                --index <= "110";
             end if;
+            if (go = '1') then
 
-        end if;
+                if (unsigned(index) < 7) then 
+                    tx <= seq(to_integer(unsigned(index)));
+                    index <= std_logic_vector( unsigned(index) + 1);
+
+                elsif (unsigned(index) = 7) then
+                   -- tx <= '0';
+                    index <= (others => '0'); 
+                    go <= '0';
+                    ready <= '1'; -- does this act as stop bit?
+                end if;
+
+    
+            end if;
+         end if;
       end if;
     end if;
 end process;
