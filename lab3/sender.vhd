@@ -35,21 +35,22 @@ entity sender is
  Port ( 
         rst, clk, en, btn, ready : in std_logic;
         send : out std_logic;
-        char : out std_logic_vector (7 downto 0)
+        char : out std_logic_vector (7 downto 0) := (others => '0')
  );
 end sender;
 
 architecture Behavioral of sender is
 
 type arr is array (0 to 4) of std_logic_vector (7 downto 0);
-signal NETID : arr := ( 0 => "01101101", 1 => "01101101", 2 => "01101111", 3 => "00111001", 4 => "00110001");
+signal NETID : arr := ("01101101", "01101101", "01101111", "00111001", "00110001"); -- mmo91
 signal i : std_logic_vector(2 downto 0) := (others => '0'); -- counts up to 5 or "101"
-signal idle : std_logic := '1';
-signal busyA : std_logic;
-signal busyB: std_logic;
-signal busyC: std_logic;
-signal busy: std_logic_vector ( 2 downto 0) := "000";
-
+--signal idle : std_logic := '1';
+--signal busyA : std_logic;
+--signal busyB: std_logic;
+--signal busyC: std_logic;
+signal busy: std_logic_vector ( 3 downto 0) := "0000"; -- idle
+type state is (idle, busyA, busyB, busyC);
+signal status : state := idle;
 -- utilize idle state --
 begin
 FSM: process(clk) begin
@@ -58,32 +59,30 @@ FSM: process(clk) begin
             if (rst = '1') then
                 send <= '0';
                 char <= (others => '0');
-                idle <= '1';
+                status <= idle;
             else
-                if (ready = '1') then
-                    if (btn = '1') then
+                if (ready = '1' and btn = '1') then
+
                         if (unsigned(i) < 5) then
-                            send <= '1';
-                            char <= NETID(to_integer(unsigned(i)));
-                            i <= std_logic_vector(unsigned(i) + 1);
-                            if (busy = "000") then
-                                busy <= "001"; -- busyA state
-                            elsif (busy = "001") then
-                                busy <= "010"; -- busyB state
-                            elsif (busy = "010") then
-                                send <= '0';
-                                busy <= "100"; -- busyC state
-                            end if;
-                        elsif (unsigned(i) = 5) then
+                            
+                            case status is
+                                when idle => 
+                                    status <= busyA;
+                                    send <= '1';
+                                    char <= NETID(to_integer(unsigned(i)));
+                                    i <= std_logic_vector(unsigned(i) + 1);
+                                when busyA => status <= busyB;
+                                when busyB => status <= busyC; send <= '0';
+                                when others => status <= busyC;
+                             end case;
+                         elsif (unsigned(i) = 5) then
                             i <= (others => '0');
-                            idle <='1';
-                        end if;
-                    else 
-                        if (busy <= "100") then
-                            busy <= "000";
-                            idle <= '1';
+                            status <= idle;     
                          end if;
-                    end if;
+                else -- ready '1' btn '0'
+                    status <= idle;
+                    send <= '0';
+        
                 end if;
             end if; 
         end if;

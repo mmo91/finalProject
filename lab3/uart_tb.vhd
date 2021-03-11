@@ -19,7 +19,8 @@ end component ;
 type str is array (0 to 4) of std_logic_vector (7 downto 0) ; 
 signal word : str := ( x"48", x"65", x"6C", x"6C", x"6F") ; 
 signal rst : std_logic := '0'; 
-signal clk , en , send , rx , ready , tx , newChar : std_logic := '0'; signal charSend , charRec : std_logic_vector (7 downto 0) := ( others => '0') ; 
+signal clk , en , send , rx , ready , tx , newChar : std_logic := '0'; 
+signal charSend , charRec : std_logic_vector (7 downto 0) := ( others => '0') ; 
 begin 
 -- the sender UART 
     dut : uart port map( 

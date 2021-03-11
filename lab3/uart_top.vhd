@@ -79,6 +79,7 @@ signal en : std_logic;
 signal ready: std_logic;
 signal char : std_logic_vector(7 downto 0);
 signal send : std_logic;
+signal rx: std_logic;
 
 begin
 
@@ -86,8 +87,9 @@ begin
     u2: debounce Port map ( clk => clk, btn => btn(1), dbnc => button);
     u3: clk_div Port map (clk => clk, div => en);
     u4: sender Port map (btn => button, clk => clk, en => en, ready => ready, rst => rst, char => char, send => send);
-    u5: uart Port map (charSend => char, clk => clk, en => en, rst => rst, rx => TXD, send => send, ready => ready, tx => RXD);
-    
+    u5: uart Port map (charSend => char, clk => clk, en => en, rst => rst, rx => TXD, send => send, ready => ready, tx => rxd);
+
+   
     
 
 end Behavioral;

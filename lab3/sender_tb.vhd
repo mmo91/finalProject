@@ -57,22 +57,31 @@ clk_gen: process begin
     tb_clk <= '1';
     wait for 4 ns;
     tb_clk <= '0';
+--wait for 4 ns;
 end process clk_gen;
 
 proc: process begin
-    wait for 4 ns;
-    tb_en <= '1';
-    tb_send <= '1';
     tb_btn <= '1';
     tb_rst <= '0';
-    wait for 12 ns;
-    tb_btn <= '0';
-    wait for 12 ns;
-    tb_btn <= '1';
-    wait for 12 ns;
-    tb_btn <= '0';
     tb_rdy <= '1';
+    wait for 75000 ns;
+    tb_btn <= '0';
+    wait for 1 ms;
+    --tb_btn <= '1';
+    --wait for 12 ns;
+    --tb_btn <= '0';
+    --tb_rdy <= '1';
+    --wait for 8 ns;
 end process proc;
+
+div: process begin
+    tb_en <= '1';
+    --tb_rdy <= '1';
+    wait for 1 ns;
+    tb_en <= '0';
+   -- tb_rdy <= '0';
+    wait for 2500 ns;
+end process div;
 
 dut: sender port map (
     clk => tb_clk,
