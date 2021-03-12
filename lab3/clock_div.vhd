@@ -31,14 +31,14 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity clk_div is
+entity clock_div is
 Port (
     clk : in std_logic;
     div : out std_logic
  );
-end clk_div;
+end clock_div;
 
-architecture Behavioral of clk_div is
+architecture Behavioral of clock_div is
     signal counter : std_logic_vector(10 downto 0) := (others => '0');
     signal divder : std_logic := '0';
 begin
@@ -47,13 +47,13 @@ begin
     begin
     
         if rising_edge(clk) then
-            if (unsigned(counter) < 1086) then
+            if (unsigned(counter) < 2172) then
                 counter <= std_logic_vector(unsigned(counter) + 1);
             else
                 counter <= (others => '0');
                 
             end if;
-            if ((unsigned(counter) < 543 )) then
+            if ((unsigned(counter) < 1086 )) then
                 div <= '0';
             else
                 div <= '1';

@@ -50,7 +50,8 @@ begin
                 sreg(0) <= btn;
                 if (sreg(1) = '1') then
                     samples <= std_logic_vector(unsigned(samples) + 1);
-                    if (unsigned(samples) = 2500000) then
+                   -- if (unsigned(samples) = 2500000) then
+                    if (unsigned(samples) = 250000) then
                         dbnc <= '1';
                     end if;
                 else

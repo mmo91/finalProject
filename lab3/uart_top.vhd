@@ -50,7 +50,7 @@ port (
  );
 end component;
 
-component clk_div is
+component clock_div is
 port ( 
     clk : in std_logic;
     div : out std_logic
@@ -85,7 +85,7 @@ begin
 
     u1: debounce Port map ( clk => clk, btn => btn(0), dbnc => rst);
     u2: debounce Port map ( clk => clk, btn => btn(1), dbnc => button);
-    u3: clk_div Port map (clk => clk, div => en);
+    u3: clock_div Port map (clk => clk, div => en);
     u4: sender Port map (btn => button, clk => clk, en => en, ready => ready, rst => rst, char => char, send => send);
     u5: uart Port map (charSend => char, clk => clk, en => en, rst => rst, rx => TXD, send => send, ready => ready, tx => rxd);
 
