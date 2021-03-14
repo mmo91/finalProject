@@ -62,7 +62,7 @@ begin
     write: process begin
         tb_txd <= '1';
         tb_btn <= "10";
-        wait for 4 ms;
+        wait for 2.01 ms;
         tb_btn <= "00";
         wait for 1 ms;
  
