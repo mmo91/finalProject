@@ -41,7 +41,6 @@ Port (
 end uart_top;
 
 architecture Behavioral of uart_top is
-
 component debounce is 
 port (
     clk : in std_logic;
@@ -64,6 +63,8 @@ port (
     char : out std_logic_vector (7 downto 0)
 );
 end component;
+--attribute keep : string;
+--attribute keep of sender : component is "true";
 
 component uart is
 port ( 
@@ -80,7 +81,8 @@ signal ready: std_logic;
 signal char : std_logic_vector(7 downto 0);
 signal send : std_logic;
 signal rx: std_logic;
-
+attribute keep_hierarchy : string;
+attribute keep_hierarchy of u4 : label is "yes";
 begin
 
     u1: debounce Port map ( clk => clk, btn => btn(0), dbnc => rst);

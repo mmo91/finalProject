@@ -39,7 +39,7 @@ Port (
 end clock_div;
 
 architecture Behavioral of clock_div is
-    signal counter : std_logic_vector(12 downto 0) := (others => '0');
+    signal counter : std_logic_vector(10 downto 0) := (others => '0');
     signal divder : std_logic := '0';
 begin
 
