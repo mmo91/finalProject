@@ -44,14 +44,10 @@ architecture Behavioral of sender is
 type arr is array (0 to 4) of std_logic_vector (7 downto 0);
 signal NETID : arr := ("01101101", "01101101", "01101111", "00111001", "00110001"); -- mmo91
 signal i : std_logic_vector(2 downto 0) := (others => '0'); -- counts up to 5 or "101"
---signal idle : std_logic := '1';
---signal busyA : std_logic;
---signal busyB: std_logic;
---signal busyC: std_logic;
 signal busy: std_logic_vector ( 3 downto 0) := "0000"; -- idle
 type state is (idle, busyA, busyB, busyC);
 signal status : state := idle;
--- utilize idle state --
+
 begin
 FSM: process(clk) begin
     if rising_edge(clk) then
