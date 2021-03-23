@@ -100,13 +100,14 @@ process(clk) begin
                 vc <= (others => '0');
                 vcount <= vc;
                 end if;
-                -- turn display on--
-                if (v_on = '1' and h_on = '1') then
-                    vid <= '1';
-                else 
-                    vid <= '0';
-                end if;
             end if;
+            -- turn display on--
+            if (v_on = '1' and h_on = '1') then
+                vid <= '1';
+            else 
+                vid <= '0';
+            end if;
+            
         end if;
     end if;
 end process;
