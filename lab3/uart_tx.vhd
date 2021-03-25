@@ -51,7 +51,7 @@ signal seq: std_logic_vector(7 downto 0);
 
 
 begin
-proc: process(clk)
+proc: process(clk, rst)
 begin
     if (rst = '1') then
         idle <= '1';

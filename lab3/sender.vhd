@@ -33,7 +33,8 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity sender is
  Port ( 
-        rst, clk, en, btn, ready : in std_logic;
+        rst, clk, en, btn: in std_logic;
+        ready : in std_logic := '1';
         send : out std_logic;
         char : out std_logic_vector (7 downto 0) := (others => '0')
  );
@@ -42,16 +43,14 @@ end sender;
 architecture Behavioral of sender is
 
 type arr is array (0 to 4) of std_logic_vector (7 downto 0);
-signal NETID : arr := ("01101101", "01101101", "01101111", "00111001", "00110001"); -- mmo91
+signal NETID : arr := (x"6D", x"6D", x"6F", x"39", x"31");
+--signal NETID : arr := ("01101101", "01101101", "01101111", "00111001", "00110001"); -- mmo91
 signal i : std_logic_vector(2 downto 0) := (others => '0'); -- counts up to 5 or "101"
---signal idle : std_logic := '1';
---signal busyA : std_logic;
---signal busyB: std_logic;
---signal busyC: std_logic;
+
 signal busy: std_logic_vector ( 3 downto 0) := "0000"; -- idle
 type state is (idle, busyA, busyB, busyC);
 signal status : state := idle;
--- utilize idle state --
+
 begin
 FSM: process(clk) begin
     if rising_edge(clk) then
@@ -60,32 +59,37 @@ FSM: process(clk) begin
                 send <= '0';
                 char <= (others => '0');
                 status <= idle;
+                i <= (others => '0');
             else
+                if (btn = '1') then
+                case status is
+                    when idle =>  status <= busyA;
+                    when busyA => status <= busyB;
+                    when busyB => status <= busyC; send <= '0';
+                    when busyC => status <= busyC;
+                    when others => status <= idle;
+                    end case;
+                end if;
                 if (ready = '1' and btn = '1') then
-
                         if (unsigned(i) < 5) then
-                            
-                            case status is
-                                when idle => 
-                                    status <= busyA;
-                                    send <= '1';
-                                    char <= NETID(to_integer(unsigned(i)));
-                                    i <= std_logic_vector(unsigned(i) + 1);
-                                when busyA => status <= busyB;
-                                when busyB => status <= busyC; send <= '0';
-                                when others => status <= busyC;
-                             end case;
+                          if (status = busyA) then
+                            char <= NETID(to_integer(unsigned(i)));
+                             i <= std_logic_vector(unsigned(i) + 1);
+                             send <= '1';
+                          end if;
+
                          elsif (unsigned(i) = 5) then
                             i <= (others => '0');
                             status <= idle; 
                             char <= (others => '0');    
                          end if;
-                else -- ready '1' btn '0'
-                    status <= idle;
-                    send <= '0';
-                    char <= (others => '0');    
-
-        
+                elsif (ready = '1' and btn = '0') then
+                   status <= idle;
+                   char <= (others => '0');
+                --elsif (ready = '0' and btn = '1') then -- stay in busy C until btn is '0'
+                    --status <= busyC;
+                    --send <= '0';
+                    --char <= (others => '0');
                 end if;
             end if; 
         end if;

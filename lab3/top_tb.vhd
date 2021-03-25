@@ -53,28 +53,41 @@ signal tb_RXD : std_logic;
 begin
 
     clk_gen_proc : process begin
+    
+        tb_clk <= '0';
         wait for 4 ns;
         tb_clk <= '1';
         wait for 4 ns;
-        tb_clk <= '0';
-    end process clk_gen_proc;
+        end process clk_gen_proc;
     
     write: process begin
         tb_txd <= '1';
-        tb_btn <= "10";
-        wait for 2.01 ms;
+        tb_btn <= "01"; -- reset
+        wait for 20.1 ms;
         tb_btn <= "00";
         wait for 1 ms;
- 
-        --wait for 40 ns;
+        tb_btn <= "10"; -- send 'm'
+        wait for 20.1 ms;
+        tb_btn <= "00";
+        wait for 1 ms;
+        tb_btn <= "10"; -- send 'm'
+        wait for 20.1 ms;
+        tb_btn <= "00";
+        wait for 1 ms;
+        tb_btn <= "10"; -- send 'o'
+        wait for 20.1 ms;
+        tb_btn <= "00";
+        wait for 1 ms;
+        tb_btn <= "10"; -- send '9'
+        wait for 20.1 ms;
+        tb_btn <= "00";
+        wait for 1 ms; 
+        tb_btn <= "10"; -- send '1'
+        wait for 20.1 ms;
+        tb_btn <= "00";
+        wait for 1 ms;
     end process write;
     
---    txd: process begin
---        tb_TXD <= '0';
---        wait for 4356 ns;
---        tb_TXD <= '1';
---        wait for 4356 ns;
---    end process txd;
     
     dut: uart_top 
        port map (

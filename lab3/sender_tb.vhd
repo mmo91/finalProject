@@ -75,12 +75,12 @@ proc: process begin
 end process proc;
 
 div: process begin
-    tb_en <= '1';
-    --tb_rdy <= '1';
-    wait for 1 ns;
     tb_en <= '0';
+    --tb_rdy <= '1';
+    wait for 8680 ns;
+    tb_en <= '1';
    -- tb_rdy <= '0';
-    wait for 2500 ns;
+    wait for 8 ns;
 end process div;
 
 dut: sender port map (

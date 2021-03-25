@@ -68,9 +68,11 @@ end component;
 
 component uart is
 port ( 
-    charSend : in std_logic_vector (7 downto 0);
-    clk, en, rst, rx, send : in std_logic;
-    ready, tx : out std_logic
+
+    clk, en, send, rx, rst      : in std_logic;
+    charSend                    : in std_logic_vector (7 downto 0);
+    ready, tx, newChar          : out std_logic;
+    charRec                     : out std_logic_vector (7 downto 0)
 );
 end component;   
 
@@ -81,17 +83,17 @@ signal ready: std_logic;
 signal char : std_logic_vector(7 downto 0);
 signal send : std_logic;
 signal rx: std_logic;
-attribute keep_hierarchy : string;
-attribute keep_hierarchy of u4 : label is "yes";
+signal charRec: std_logic_vector(7 downto 0);
+signal newChar: std_logic;
+
 begin
 
     u1: debounce Port map ( clk => clk, btn => btn(0), dbnc => rst);
     u2: debounce Port map ( clk => clk, btn => btn(1), dbnc => button);
     u3: clock_div Port map (clk => clk, div => en);
     u4: sender Port map (btn => button, clk => clk, en => en, ready => ready, rst => rst, char => char, send => send);
-    u5: uart Port map (charSend => char, clk => clk, en => en, rst => rst, rx => TXD, send => send, ready => ready, tx => rxd);
+    u5: uart Port map (charSend => char, clk => clk, en => en, rst => rst, rx => TXD, send => send, ready => ready, tx => RXD, charRec => charRec, newChar => newChar);
 
-   
     
 
 end Behavioral;

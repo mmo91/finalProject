@@ -39,7 +39,7 @@ Port (
 end clock_div;
 
 architecture Behavioral of clock_div is
-    signal counter : std_logic_vector(10 downto 0) := (others => '0');
+    signal counter : std_logic_vector(11 downto 0) := (others => '0');
     signal divder : std_logic := '0';
 begin
 
@@ -47,13 +47,13 @@ begin
     begin
     
         if rising_edge(clk) then
-            if (unsigned(counter) < 2172) then
+            if (unsigned(counter) < 2170) then
                 counter <= std_logic_vector(unsigned(counter) + 1);
             else
                 counter <= (others => '0');
                 
             end if;
-            if ((unsigned(counter) < 1086 )) then
+            if ((unsigned(counter) < 1085 )) then
                 div <= '0';
             else
                 div <= '1';
