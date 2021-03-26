@@ -52,26 +52,25 @@ begin
 process(clk) begin
     if(rising_edge(clk)) then
         if (en = '1') then
-        
-            if (unsigned(hcount) < 480) then
+            -- reset--
+            if (VS = '0') then
+                counter <= (others=> '0');
+                addr <= counter;
+            end if;
+            
+            if (vid = '1' and unsigned(hcount) < 480) then
+                -- increment addr counter--
+                counter <= std_logic_vector(unsigned(counter) + 1);
+                addr <= counter;
                 
-                if (vid = '1') then
-                    R <= pixel(7 downto 5) & "0";
-                    G <= pixel(4 downto 2) & "0";
-                    B <= pixel(1 downto 0) & "00";
-                    counter <= std_logic_vector(unsigned(counter) + 1);
-                    addr <= counter;
-                end if;
-                
+                --set R G B --
+                R <= pixel(7 downto 5) & '0';
+                G <= pixel(4 downto 2) & '0';
+                B <= pixel(1 downto 0) & "00";
             else
                 R <= (others => '0');
                 G <= (others => '0');
                 B <= (others => '0');
-                
-                if (VS = '1') then
-                    counter <= (others => '0');
-                    addr <= counter;
-                end if;
                 
             end if;
         end if;

@@ -49,64 +49,47 @@ begin
 process(clk) begin
     if (rising_edge(clk)) then
         if (en = '1') then
-            -- increment horizontal counter range --
-            if (unsigned(hc) < 800) then 
-            
-                -- set horizontal display --
-                if (unsigned (hc) < 640) then
-                    h_on <= '1';
-                else 
-                    h_on <= '0';
-                    
-                    -- set hs pulse --
-                    if (unsigned(hc) > 655 and unsigned(hc) < 752) then 
-                        hs <= '0';
-                    else
-                        hs <= '1';
-                    end if;
-                end if;
-                
-                -- increment counter --
-                hc <= std_logic_vector(unsigned(hc) + 1);
-                hcount <= hc;
-            else 
-                -- reset hc to 0 and start vc
-                hc <= (others => '0');
-                hcount <= hc;
-                
-                -- increment vertical counter range --
-                if (unsigned(vc) < 525) then
-                 
-                    --set vertical display --
-                    if (unsigned(vc) < 480) then 
-                        v_on <= '1';
-                    else
-                        v_on <= '0';
-                        
-                        -- set vs pulse --
-                        if (unsigned(vc) > 489 and unsigned(vc) < 492) then 
-                            vs <= '0';
-                        else
-                            vs <= '1';
-                        end if;
-                    end if;
-                    
-                    -- increment counter --
-                    vc <= std_logic_vector(unsigned(vc) + 1);
-                    vcount <= vc;
-                else
-                
-                 -- rest vc to 0
+        
+           -- horizontal counter --
+           if (unsigned(hc) <= 799) then
+            hc <= std_logic_vector(unsigned(hc) + 1);
+            hcount <= hc;
+           else
+            hc <= (others => '0');
+            hcount <= hc;
+           end if;
+           
+           -- vertical counter --
+           if (unsigned(hc) = 0) then
+            if (unsigned(vc) <= 524) then
+                vc <= std_logic_vector(unsigned(vc) + 1);
+                vcount <= vc;
+            else
                 vc <= (others => '0');
                 vcount <= vc;
-                end if;
             end if;
-            -- turn display on--
-            if (v_on = '1' and h_on = '1') then
-                vid <= '1';
-            else 
-                vid <= '0';
-            end if;
+           end if;
+           
+           -- set display ON or OFF --
+           if (unsigned(hc) <= 639 and unsigned(vc) <= 479) then
+            vid <= '1';
+           else
+            vid <= '0';
+           end if;
+           
+           -- horizontal sync --
+           if (unsigned(hc) >= 656 and unsigned(hc) <= 751) then
+            hs <= '0';
+           else
+            hs <= '1';
+           end if;
+           
+           -- vertical sync --
+           if (unsigned(vc) >= 490 and unsigned(vc) <= 491) then
+            vs <= '0';
+           else
+            vs <= '1';
+           end if;
             
         end if;
     end if;
