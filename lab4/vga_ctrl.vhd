@@ -51,7 +51,7 @@ process(clk) begin
         if (en = '1') then
         
            -- horizontal counter --
-           if (unsigned(hc) <= 799) then
+           if (unsigned(hc) < 799) then
             hc <= std_logic_vector(unsigned(hc) + 1);
             hcount <= hc;
            else
@@ -61,7 +61,7 @@ process(clk) begin
            
            -- vertical counter --
            if (unsigned(hc) = 0) then
-            if (unsigned(vc) <= 524) then
+            if (unsigned(vc) < 524) then
                 vc <= std_logic_vector(unsigned(vc) + 1);
                 vcount <= vc;
             else
