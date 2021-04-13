@@ -14,13 +14,12 @@ use IEEE.NUMERIC_STD.ALL;
 entity my_alu is
  Port (clk,en : in std_logic;
         A, B : in unsigned(15 downto 0);
-        Opcode : in unsigned (4 downto 0);
+        Opcode : in std_logic_vector(3 downto 0);
         funct : out unsigned (15 downto 0)
   );
 end my_alu;
 
 architecture Behavioral of my_alu is
-
 
 
 begin
@@ -30,60 +29,60 @@ begin
 if rising_edge(clk) then
     if(en = '1') then
         case (Opcode) is
-            when "00000" =>
+            when "0000" =>
                 funct <= A + B;
-            when "00001" =>
+            when "0001" =>
                 funct <= A - B;
-            when "00010" =>
+            when "0010" =>
                 funct <= A + 1;
-            when "00011" =>
+            when "0011" =>
                 funct <= A - 1;
-            when "00100" =>
+            when "0100" =>
                 funct <= 0 - A;
-            when "00101" =>
+            when "0101" =>
                 funct <= unsigned( A sll 1);
-            when "00110" =>
+            when "0110" =>
                 funct <= unsigned (A srl 1);
-            when "00111" =>
+            when "0111" =>
                 funct <= shift_right(A,1);
-            when "01000" =>
+            when "1000" =>
                 funct <= unsigned(std_logic_vector(A) and std_logic_vector(B));
-            when "001001" =>
+            when "1001" =>
                 funct <= unsigned(std_logic_vector(A) or std_logic_vector(B));
-            when "01010" => 
+            when "1010" => 
                 funct <= unsigned(std_logic_vector(A) xor std_logic_vector(B));
-            when "01011" =>
+            when "1011" =>
                if (signed(A) < signed(B)) then 
-                funct <= To_unsigned(1,4);
+                funct <= To_unsigned(1,16);
             else
-                funct <= To_unsigned(0,4);
+                funct <= To_unsigned(0,16);
             end if;             
-            when "01100" =>
+            when "1100" =>
                if (signed(A) > signed(B)) then 
-                   funct <= To_unsigned(1,4);
+                   funct <= To_unsigned(1,16);
                else
-                   funct <= To_unsigned(0,4);
+                   funct <= To_unsigned(0,16);
                end if;
-            when "01101" =>
+            when "1101" =>
                if (A = B) then 
-                funct <= To_unsigned(1,4);
+                funct <= To_unsigned(1,16);
             else
-                funct <= To_unsigned(0,4);
+                funct <= To_unsigned(0,16);
             end if;
-            when "01110" =>
+            when "1110" =>
                if (A < B) then 
-                funct <= To_unsigned(1,4);
+                funct <= To_unsigned(1,16);
             else
-                funct <= To_unsigned(0,4);
+                funct <= To_unsigned(0,16);
             end if;
-            when "01111" =>
+            when "1111" =>
                if (A > B) then 
-                funct <= To_unsigned(1,4);
+                funct <= To_unsigned(1,16);
             else
-                funct <= To_unsigned(0,4);
+                funct <= To_unsigned(0,16);
             end if;
             when others => 
-                funct <= To_unsigned(0,4);   
+                funct <= To_unsigned(0,16);   
          end case;
      end if;
  end if;

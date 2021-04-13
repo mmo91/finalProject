@@ -36,18 +36,18 @@ entity pixel_pusher is
            en : in STD_LOGIC;
            VS : in STD_LOGIC;
            pixel : in STD_LOGIC_VECTOR (15 downto 0);
-           hcount : in STD_LOGIC_VECTOR (5 downto 0);
-           vcount: in STD_LOGIC_VECTOR (5 downto 0);
+           hcount : in STD_LOGIC_VECTOR (6 downto 0);
+           vcount: in STD_LOGIC_VECTOR (6 downto 0);
            vid : in STD_LOGIC;
-           R : out STD_LOGIC_VECTOR (4 downto 0);
-           B : out STD_LOGIC_VECTOR (4 downto 0);
-           G : out STD_LOGIC_VECTOR (5 downto 0);
+           R : out STD_LOGIC_VECTOR (3 downto 0);
+           B : out STD_LOGIC_VECTOR (3 downto 0);
+           G : out STD_LOGIC_VECTOR (3 downto 0);
            addr : out STD_LOGIC_VECTOR (11 downto 0));
 end pixel_pusher;
 
 architecture Behavioral of pixel_pusher is
 
-signal counter : std_logic_vector(111 downto 0) := (others => '0');
+signal counter : std_logic_vector(11 downto 0) := (others => '0');
 
 begin
 process(clk) begin
@@ -65,9 +65,9 @@ process(clk) begin
                 addr <= counter;
                 
                 --set R G B --
-                R <= pixel(7 downto 5) & "00";
-                G <= pixel(4 downto 2) & "00";
-                B <= pixel(1 downto 0) & "000";
+                R <= pixel(7 downto 5) & "0";
+                G <= pixel(4 downto 2) & "0";
+                B <= pixel(1 downto 0) & "00";
             else
                 R <= (others => '0');
                 G <= (others => '0');

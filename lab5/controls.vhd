@@ -216,7 +216,7 @@ if(rising_edge(clk)) then
         -- action --
         fbAddr1 <= reg2(11 downto 0);
         alu_res <= fbDin1; 
-        wr_enR1 <= '0'; -- reset
+        wr_enR1 <= '0'; 
         wr_enR2 <= '0';
         -- next state --
         ctrl <= store;
@@ -241,23 +241,30 @@ if(rising_edge(clk)) then
         end if;
         
         when equals =>
-        -- action -- not sure which values to check for equals
-        alu_res <= imm;
+        -- action --
         wr_enR1 <= '0';
         wr_enR2 <= '0';
-        rID1 <= "00001"; -- get pc id
-        reg1 <= regrD1;
+        
+        rID1 <= reg1(4 downto 0);
+        if(regrD1 = reg2) then
+            alu_res <= imm;
+            rID2 <= "00001"; -- get pc id
+            reg1 <= regrD2;
+        end if;
         -- next state --
         ctrl <= store;
         
         when nequal =>
-        -- action -- not sure which values to check for nequal
-        alu_res <= imm;
-        
+        -- action -- 
         wr_enR1 <= '0';
         wr_enR2 <= '0';
-        rID1 <= "00001"; -- get pc id
-        reg1 <= regrD1;
+        
+        rID1 <= reg1(4 downto 0);
+        if(regrD1 /= reg2) then
+            alu_res <= imm;
+            rID2 <= "00001"; -- get pc id
+            reg1 <= regrD2;
+        end if;
         -- next state --
         ctrl <= store;
         
