@@ -216,7 +216,7 @@ if(rising_edge(clk)) then
         -- action --
         fbAddr1 <= reg2(11 downto 0);
         alu_res <= fbDin1; 
-        wr_enR1 <= '0'; 
+        wr_enR1 <= '1'; --write to fb
         wr_enR2 <= '0';
         -- next state --
         ctrl <= store;
@@ -225,6 +225,8 @@ if(rising_edge(clk)) then
         -- action --
         fbAddr1 <= reg1(11 downto 0); -- fb[reg1]
         fbDout1 <= reg2;
+        wr_enR1 <= '0';
+        wr_enR2 <= '0';
         -- next state --
         ctrl <= finish;
         

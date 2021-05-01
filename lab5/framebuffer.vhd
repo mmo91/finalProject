@@ -45,13 +45,20 @@ entity framebuffer is
 end framebuffer;
 
 architecture Behavioral of framebuffer is
-type mem_type is array (0 to 4096) of std_logic_vector( 15 downto 0);
+type mem_type is array (0 to 4095) of std_logic_vector( 15 downto 0);
 signal mem : mem_type;
 
 begin
 
 process(clk1) begin
 if(rising_edge(clk1)) then
+
+    if(ld = '1') then -- rst
+        for i in 0 to 2047 loop
+            mem(i) <= (others => '0'); -- port a
+            mem(i+2048) <= (others => '0'); -- port b
+        end loop;
+    end if;
     -- port A
     if(en1 = '1') then 
         if(wr_en1 = '1') then

@@ -58,7 +58,10 @@ process(clk) begin
         reg(0) <= (others => '0');
         
         if(rst = '1') then
-            reg <= (others => (others => '0'));
+            for i in 0 to 15 loop
+                reg(i) <= (others => '0');
+                reg(i+16) <= (others=> '0');
+            end loop;
         elsif (en = '1') then
             if (wr_en1 = '1') then
                 reg(to_integer(unsigned(id1))) <= din_1;
