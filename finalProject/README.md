@@ -2,7 +2,6 @@
 
 The purpose of this project is to create a controller that will control the LED lights on the zybo board, as well as display a counter of how long the ALS pmod is active. The overall goal of the project is to create a miniature home automation system that can be used to alter and monitor household lights. It communicates to the controller through the UART protocol on the UART pmod and BT2 pmod.
 
-
 # How to:
 
 There are two ways to test my project: python controller or termite terminal
