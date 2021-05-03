@@ -5,7 +5,7 @@ The purpose of this project is to create a controller that will control the LED 
 
 # How to:
 
-There are two ways to test my project. Either through the python controller or termite terminal
+There are two ways to test my project: python controller or termite terminal
 
 ## Python Jupyter Notebook
 
